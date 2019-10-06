@@ -30,7 +30,9 @@
 
 </table>
 <form action="#pdo#database_functions.php" method="get">
+    <?php if (!isset($_SESSION['username'])) { ?>
     Введите ваше имя : <input type="text" name="author_name"> Запомнить меня <input type="checkbox" name="remember"><br>
+    <?php } ?>
 Введите текст заметки : <input type="text" name="text_notate"><br>
 <input type="submit" name="submited" value="Добавить">
 </form>
