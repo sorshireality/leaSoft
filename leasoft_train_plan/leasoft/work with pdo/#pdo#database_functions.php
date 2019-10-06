@@ -1,6 +1,19 @@
 <?php
+#Если нажата кнопка выйти
+if (isset($_GET['forgot_user']))
+{
+    unset($_SESSION['username']);
+    header('Location: '.$_SERVER['HTTP_REFERER']);
+}
+
 #Проверка есть ли попытка добавить данные
-if (isset($_GET['submited'])) { if ($_GET['text_notate']!="") addGrubNotate($_GET['text_notate']);
+if (isset($_GET['submited'])) {if ($_GET['text_notate']!=""){
+    if ($_GET['author_name']=="") addGrubNotate($_GET['text_notate']);
+    else {
+        if ($_GET['remember'] = true) $_SESSION['username']=$_GET['author_name'];
+        addGrubNotate($_GET['text_notate'],$_GET['author_name']);
+         }
+}
 else {header('Location: ' . $_SERVER['HTTP_REFERER']); exit();}}
 
 #Проверка есть ли попытка удалить данные
@@ -28,15 +41,16 @@ try
 }
 
 #Функция добавления заметки
-function addGrubNotate($text)
+function addGrubNotate($text,$author = "Lizer")
 {
     try {
 
         $connection = connectionDB();
-        $sql = "INSERT INTO notations_table (notate,author) VALUES (:text,'Barak Obama')";
+        $sql = "INSERT INTO notations_table (notate,author) VALUES (:text,:author)";
         $s = $connection->prepare($sql);
-        $s->execute(['text' => $text]);
+        $s->execute(['text' => $text, 'author' => $author]);
         print_r($s);
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
         exit();
     } catch (PDOException $e) {
         echo "Error add : " . $e->getMessage();
@@ -49,11 +63,12 @@ function addGrubNotate($text)
 function deleteGrubNotate($id){
     try{
         $connection = connectionDB();
-        $sql = "Delete from notations_table Where id=:id";
+        $sql = "Delete FROM notations_table Where id=:id";
         $s = $connection->prepare($sql);
         $s->execute(['id' => $id]);
-    print_r($s);
-        #header('Location: ' . $_SERVER['HTTP_REFERER']);
+        #print_r($s);
+
+    header('Location: ' . $_SERVER['HTTP_REFERER']);
     exit();
     } catch (PDOException $e)
     {
