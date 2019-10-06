@@ -1,6 +1,6 @@
+<?php session_start(); ?>
 <html>
 <head>
-    <?php session_start(); ?>
     <?php include "#pdo#notate_list.php"?>
     <title>Notate List</title></head>
 <body>
