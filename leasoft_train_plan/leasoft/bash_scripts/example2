@@ -1,0 +1,4 @@
+#!/bin/bash
+curse=3
+brain='less'
+echo "study on $curse curse make me brain $brain"
